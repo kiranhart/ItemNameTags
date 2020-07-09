@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ca.tweetzy</groupId>
-    <artifactId>ItemTags</artifactId>
-    <version>3.0</version>
+    <artifactId>ItemNameTags</artifactId>
+    <version>3.0.1</version>
 
     <build>
         <defaultGoal>clean install</defaultGoal>
-        <finalName>ItemTags-${project.version}</finalName>
+        <finalName>ItemNameTags-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -96,7 +96,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <version>1.16.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

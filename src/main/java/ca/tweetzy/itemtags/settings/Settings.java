@@ -16,10 +16,7 @@ public class Settings {
 
     static final Config config = ItemTags.getInstance().getCoreConfig();
 
-    public static final ConfigSetting METRICS = new ConfigSetting(config, "metrics", true, "Should the plugin use metrics?", "It simply allows me to see how many servers", "are currently using the item tags plugin.");
-
     public static final ConfigSetting LANG = new ConfigSetting(config, "locale.lang", "en_US", "The default language file the plugin should use");
-    public static final ConfigSetting PREFIX = new ConfigSetting(config, "locale.prefix", "&8[&eItemTags&8]", "The default prefix for the plugin");
 
     public static final ConfigSetting CANCEL_WORD = new ConfigSetting(config, "cancel word", "cancel", "What should be the cancel word when renaming?");
 

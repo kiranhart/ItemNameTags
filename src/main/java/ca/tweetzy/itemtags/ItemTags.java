@@ -3,9 +3,10 @@ package ca.tweetzy.itemtags;
 import ca.tweetzy.core.TweetyCore;
 import ca.tweetzy.core.TweetyPlugin;
 import ca.tweetzy.core.commands.CommandManager;
+import ca.tweetzy.core.compatibility.ServerVersion;
+import ca.tweetzy.core.compatibility.XMaterial;
 import ca.tweetzy.core.configuration.Config;
-import ca.tweetzy.core.core.PluginID;
-import ca.tweetzy.core.locale.Locale;
+import ca.tweetzy.core.gui.GuiManager;
 import ca.tweetzy.core.utils.Metrics;
 import ca.tweetzy.itemtags.commands.CommandGive;
 import ca.tweetzy.itemtags.commands.CommandGiveall;
@@ -13,6 +14,7 @@ import ca.tweetzy.itemtags.commands.CommandReload;
 import ca.tweetzy.itemtags.itemtag.TagType;
 import ca.tweetzy.itemtags.listeners.PlayerListeners;
 import ca.tweetzy.itemtags.settings.Settings;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 
 import java.util.LinkedHashMap;
@@ -29,14 +31,20 @@ public class ItemTags extends TweetyPlugin {
 
     private static ItemTags instance;
 
+    @Getter
     private CommandManager commandManager;
-    private Locale locale;
 
+    @Getter
+    private final GuiManager guiManager = new GuiManager(this);
+
+    @Getter
     private LinkedHashMap<UUID, TagType> playersUsingTag;
 
     public static ItemTags getInstance() {
         return instance;
     }
+
+    protected Metrics metrics;
 
     @Override
     public void onPluginLoad() {
@@ -45,27 +53,31 @@ public class ItemTags extends TweetyPlugin {
 
     @Override
     public void onPluginEnable() {
-        TweetyCore.registerPlugin(this, (int) PluginID.ITEM_TAGS.getTweetzyID(), "NAME_TAG");
-        TweetyCore.initEvents(this);
+        TweetyCore.registerPlugin(this, 4, XMaterial.NAME_TAG.name());
+
+        // Shutdown plugin if server version is not 1.8+
+        if (ServerVersion.isServerVersionAtOrBelow(ServerVersion.V1_7)) {
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 
         Settings.setup();
 
-        new Locale(this, "en_US");
-        this.locale = Locale.getLocale(Settings.LANG.getString(), Settings.PREFIX.getString());
+        // Locale
+        setLocale(Settings.LANG.getString(), false);
 
+        this.guiManager.init();
         this.commandManager = new CommandManager(this);
         this.commandManager.addMainCommand("itemtags").addSubCommands(new CommandGive(), new CommandGiveall(), new CommandReload());
-
         this.playersUsingTag = new LinkedHashMap<>();
 
         Bukkit.getPluginManager().registerEvents(new PlayerListeners(), this);
 
-        new HartUpdater(this, getDescription().getVersion());
+        // Perform the update check
+        getServer().getScheduler().runTaskLaterAsynchronously(this, () -> new UpdateChecker(this, 29641, getConsole()).check(), 1L);
 
         // metrics
-        if (Settings.METRICS.getBoolean()) {
-            new Metrics(getInstance(), (int) PluginID.ITEM_TAGS.getbStatsID());
-        }
+        this.metrics = new Metrics(getInstance(), 7550);
 
     }
 
@@ -76,19 +88,10 @@ public class ItemTags extends TweetyPlugin {
 
     @Override
     public void onConfigReload() {
-
     }
 
     @Override
     public List<Config> getExtraConfig() {
         return null;
-    }
-
-    public Locale getLocale() {
-        return locale;
-    }
-
-    public LinkedHashMap<UUID, TagType> getPlayersUsingTag() {
-        return playersUsingTag;
     }
 }

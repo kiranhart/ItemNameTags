@@ -1,3 +1,6 @@
+general:
+    prefix: "prefix: &8[&eItemTags&8]"
+
 playeroffline="&cThat player is currently offline!"
 invalidtag="&cThat is not a valid tag type!"
 notanumber="&cThat is not a valid number!"

@@ -109,7 +109,7 @@ public class PlayerListeners implements Listener {
                             }
                         }).setOnClose(() -> ItemTags.getInstance().getPlayersUsingTag().remove(p.getUniqueId()));
                     } else if (type == TagType.ITEM_DELORE_TAG) {
-                        p.openInventory(new LoreRemovalGUI(p, is).getInventory());
+                        ItemTags.getInstance().getGuiManager().showGUI(p, new LoreRemovalGUI(p, is));
                     }
                 }
             }

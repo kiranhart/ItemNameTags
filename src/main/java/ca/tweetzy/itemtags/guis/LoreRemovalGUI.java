@@ -1,18 +1,13 @@
 package ca.tweetzy.itemtags.guis;
 
 import ca.tweetzy.core.compatibility.XMaterial;
-import ca.tweetzy.core.inventory.TInventory;
+import ca.tweetzy.core.gui.Gui;
+import ca.tweetzy.core.gui.GuiUtils;
 import ca.tweetzy.core.utils.TextUtils;
-import ca.tweetzy.core.utils.items.TItemBuilder;
 import ca.tweetzy.itemtags.ItemTags;
 import ca.tweetzy.itemtags.Methods;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -22,17 +17,20 @@ import java.util.List;
  * Time Created: 9:11 PM
  * Usage of any code found within this class is prohibited unless given explicit permission otherwise.
  */
-public class LoreRemovalGUI extends TInventory {
+public class LoreRemovalGUI extends Gui {
 
-    private Player p;
-    private ItemStack stack;
-    private List<String> lore;
+    private final Player player;
+    private final ItemStack stack;
+    private final List<String> lore;
 
-    public LoreRemovalGUI(Player p, ItemStack stack) {
-        setTitle("&8Click to remove lore");
-        setPage(1);
+    public LoreRemovalGUI(Player player, ItemStack stack) {
+        setTitle(TextUtils.formatText("&8Click to remove lore"));
+        setAllowDrops(false);
+        setAcceptsItems(false);
+        setUseLockedCells(true);
+        setDefaultItem(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem());
 
-        this.p = p;
+        this.player = player;
         this.stack = stack;
         this.lore = Methods.getItemLore(stack);
 
@@ -43,35 +41,26 @@ public class LoreRemovalGUI extends TInventory {
         if (this.lore.size() >= 37 && this.lore.size() <= 45) setRows(5);
         if (this.lore.size() >= 46 && this.lore.size() <= 54) setRows(6);
 
+        draw();
     }
 
-    @Override
-    public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, getSize(), getTitle());
+    private void draw() {
+        int slot = 0;
+        for (String s : this.lore) {
+            int finalSlot = slot;
+            setButton(slot, GuiUtils.createButtonItem(XMaterial.LIME_STAINED_GLASS_PANE, TextUtils.formatText(s), "&7Click to remove to this line from the lore"), e -> {
+                List<String> tempLore = this.lore;
+                tempLore.remove(finalSlot);
 
-        // load items
-        this.lore.forEach(line -> {
-            inventory.setItem(inventory.firstEmpty(), new TItemBuilder(XMaterial.LIME_STAINED_GLASS_PANE.parseMaterial())
-                    .setName(TextUtils.formatText(line))
-                    .setLore(TextUtils.formatText("&7Click to remove this line from the lore"))
-                    .toItemStack()
-            );
-        });
-        return inventory;
-    }
+                String[] arr = new String[tempLore.size()];
+                arr = tempLore.toArray(arr);
 
-    @Override
-    public void onClick(InventoryClickEvent e, int slot) {
-        List<String> nLore = this.lore;
-        if (slot >= 0 && slot <= 53) {
-            nLore.remove(slot);
+                Methods.setItemLore(this.stack, arr);
+                ItemTags.getInstance().getPlayersUsingTag().remove(this.player.getUniqueId());
+                e.gui.close();
+            });
+
+            slot++;
         }
-
-        String[] arr = new String[nLore.size()];
-        arr = nLore.toArray(arr);
-
-        Methods.setItemLore(this.stack, arr);
-        ItemTags.getInstance().getPlayersUsingTag().remove(p.getUniqueId());
-        e.getViewers().forEach(HumanEntity::closeInventory);
     }
 }

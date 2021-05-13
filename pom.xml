@@ -6,7 +6,7 @@
 
     <groupId>ca.tweetzy</groupId>
     <artifactId>ItemNameTags</artifactId>
-    <version>3.0.1</version>
+    <version>3.1.0</version>
 
     <build>
         <defaultGoal>clean install</defaultGoal>
@@ -91,19 +91,28 @@
             <id>nms-repo</id>
             <url>https://repo.codemc.org/repository/nms/</url>
         </repository>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/kiranhart/*</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.16.1-R0.1-SNAPSHOT</version>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>ca.tweetzy</groupId>
-            <artifactId>TweetyCore</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
+            <artifactId>tweetycore</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.16</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

@@ -60,7 +60,7 @@
                             <minimizeJar>true</minimizeJar>
                             <artifactSet>
                                 <includes>
-                                    <include>ca.tweetzy:TweetyCore</include>
+                                    <include>ca.tweetzy:tweetycore</include>
                                 </includes>
                             </artifactSet>
                             <filters>

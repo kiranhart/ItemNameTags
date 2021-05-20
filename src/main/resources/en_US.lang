@@ -10,14 +10,10 @@ usingtag: "&cPlease finish using your current redeemed tag, before using another
 blockeditem: "&cYou're not allowed to rename that item!"
 cancel: "&cYou cancelled the tag usage, your item tag has been given back"
 reload: "&aReloaded the configuration file successfully"
-pleasefinish: "&aPlease enter the new name/lore in chat first."
-
-prompt:
-    asktoentername: "&ePlease enter the new item name in chat!"
-    asktoenterlore: "&ePlease enter new lore addition in chat!"
+air: "&cYou cannot rename air."
 
 redeem:
     cancelmsg: "&eYou can always use &F'&b%cancel_word%&f'&e to cancel"
-    itemnametag: "&aPlease right click the item you wish to rename!"
-    itemloretag: "&aPlease right click the item you wish to add lore to!"
+    itemnametag: "&ePlease enter the new item name in chat!"
+    itemloretag: "&ePlease enter new lore addition in chat!"
     itemdeloretag: "&aPlease right click the item you wish to remove lore from!"

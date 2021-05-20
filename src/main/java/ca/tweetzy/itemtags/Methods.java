@@ -1,12 +1,13 @@
 package ca.tweetzy.itemtags;
 
+import ca.tweetzy.core.compatibility.ServerVersion;
 import ca.tweetzy.core.utils.TextUtils;
 import ca.tweetzy.itemtags.settings.Settings;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,10 +18,14 @@ import java.util.List;
  */
 public class Methods {
 
+    public static ItemStack getHand(Player player) {
+        return ServerVersion.isServerVersionAtOrBelow(ServerVersion.V1_8) ? player.getInventory().getItemInHand() : player.getInventory().getItemInMainHand();
+    }
+
     public static ItemStack updateItemName(ItemStack item, String title) {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setDisplayName(title);
+            meta.setDisplayName(TextUtils.formatText(title));
             item.setItemMeta(meta);
         }
         return item;
@@ -34,7 +39,7 @@ public class Methods {
                 for (String s : lore) {
                     ogLore.add(TextUtils.formatText(Settings.USE_LORE_PREFIX.getBoolean() ? Settings.LORE_PREFIX.getString() + " " + s : s));
                 }
-                meta.setLore(ogLore);
+                meta.setLore(TextUtils.formatText(ogLore));
             }
             item.setItemMeta(meta);
         }
@@ -45,7 +50,7 @@ public class Methods {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             if (lore != null && lore.length != 0) {
-                meta.setLore(new ArrayList<>(Arrays.asList(lore)));
+                meta.setLore(TextUtils.formatText(lore));
             }
             item.setItemMeta(meta);
         }

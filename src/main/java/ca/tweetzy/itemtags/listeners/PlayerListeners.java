@@ -2,9 +2,7 @@ package ca.tweetzy.itemtags.listeners;
 
 import ca.tweetzy.core.compatibility.CompatibleHand;
 import ca.tweetzy.core.compatibility.XMaterial;
-import ca.tweetzy.core.input.ChatPrompt;
 import ca.tweetzy.core.utils.PlayerUtils;
-import ca.tweetzy.core.utils.TextUtils;
 import ca.tweetzy.core.utils.nms.NBTEditor;
 import ca.tweetzy.itemtags.ItemTags;
 import ca.tweetzy.itemtags.Methods;
@@ -12,7 +10,6 @@ import ca.tweetzy.itemtags.guis.LoreRemovalGUI;
 import ca.tweetzy.itemtags.itemtag.ItemTagBuilder;
 import ca.tweetzy.itemtags.itemtag.TagType;
 import ca.tweetzy.itemtags.settings.Settings;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -34,101 +31,40 @@ public class PlayerListeners implements Listener {
     public void onTagRedeem(PlayerInteractEvent e) {
         Player p = e.getPlayer();
 
-        if (e.getAction() != null && (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK))) {
+        if (e.getAction() != null && e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
-            ItemStack is = e.getItem();
-
-            if (is != null && !is.getType().equals(Material.AIR)) {
-                // check if item is tag
-                if (NBTEditor.contains(is, "ItemTagType")) {
-                    // check if player isn't using a tag already
-                    if (!ItemTags.getInstance().getPlayersUsingTag().containsKey(p.getUniqueId())) {
-
-                        // tag type
-                        TagType type = TagType.valueOf(NBTEditor.getString(is, "ItemTagType").toUpperCase());
-
-                        // add them to the using list
-                        ItemTags.getInstance().getPlayersUsingTag().put(p.getUniqueId(), type);
-                        // take a tag
-                        PlayerUtils.takeActiveItem(p, CompatibleHand.MAIN_HAND, 1);
-
-                        // send messages
-                        ItemTags.getInstance().getLocale().getMessage(type == TagType.ITEM_NAME_TAG ? "redeem.itemnametag" : type == TagType.ITEM_LORE_TAG ? "redeem.itemloretag" : "redeem.itemdeloretag").sendPrefixedMessage(p);
-                        ItemTags.getInstance().getLocale().getMessage("redeem.cancelmsg").processPlaceholder("cancel_word", Settings.CANCEL_WORD.getString()).sendPrefixedMessage(p);
-
-                    } else {
-                        // send them a no no message
-                        ItemTags.getInstance().getLocale().getMessage("usingtag").sendPrefixedMessage(p);
-                    }
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onItemClickWhileTagActivated(PlayerInteractEvent e) {
-        Player p = e.getPlayer();
-
-        if (e.getAction() != null && (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK))) {
             ItemStack is = e.getItem();
 
             if (is == null || is.getType() == XMaterial.AIR.parseMaterial()) {
                 return;
             }
 
-            // check if player is using a tag
-            if (!ItemTags.getInstance().getPlayersUsingTag().containsKey(p.getUniqueId())) {
-                return;
-            }
-
-            // if they already clicked an item, we don't want them to redo it
-            if (ItemTags.getInstance().getEnteredTag().contains(p.getUniqueId())) {
-                ItemTags.getInstance().getLocale().getMessage("pleasefinish").sendPrefixedMessage(p);
-                return;
-            }
-
-            ItemTags.getInstance().getEnteredTag().add(p.getUniqueId());
-
-            // Check if the item is part of the blocked list
-            if (XMaterial.matchXMaterial(is).isOneOf(Settings.BLOCKED_ITEMS.getStringList())) {
-                ItemTags.getInstance().getLocale().getMessage("blockeditem").sendPrefixedMessage(p);
-                return;
-            }
-
-            TagType type = ItemTags.getInstance().getPlayersUsingTag().get(p.getUniqueId());
-
-            if (type == TagType.ITEM_NAME_TAG) {
-                ChatPrompt.showPrompt(ItemTags.getInstance(), p, TextUtils.formatText(ItemTags.getInstance().getLocale().getMessage("prompt.asktoentername").getMessage()), handle -> {
-                    if (!handle.getMessage().equalsIgnoreCase(Settings.CANCEL_WORD.getString())) {
-                        Methods.updateItemName(is, TextUtils.formatText(handle.getMessage()));
-                        ItemTags.getInstance().getPlayersUsingTag().remove(p.getUniqueId());
-                        ItemTags.getInstance().getEnteredTag().remove(p.getUniqueId());
-                    } else {
-                        PlayerUtils.giveItem(p, new ItemTagBuilder(ItemTags.getInstance().getPlayersUsingTag().get(p.getUniqueId())).getTag());
-                        ItemTags.getInstance().getPlayersUsingTag().remove(p.getUniqueId());
-                        ItemTags.getInstance().getEnteredTag().remove(p.getUniqueId());
-                        ItemTags.getInstance().getLocale().getMessage("cancel").sendPrefixedMessage(p);
-                    }
-                }).setOnClose(() -> ItemTags.getInstance().getPlayersUsingTag().remove(p.getUniqueId()));
-            } else if (type == TagType.ITEM_LORE_TAG) {
-                ChatPrompt.showPrompt(ItemTags.getInstance(), p, TextUtils.formatText(ItemTags.getInstance().getLocale().getMessage("prompt.asktoenterlore").getMessage()), handle -> {
-                    if (!handle.getMessage().equalsIgnoreCase(Settings.CANCEL_WORD.getString())) {
-                        Methods.updateItemLore(is, TextUtils.formatText(handle.getMessage()));
-                        ItemTags.getInstance().getPlayersUsingTag().remove(p.getUniqueId());
-                        ItemTags.getInstance().getEnteredTag().remove(p.getUniqueId());
-                    } else {
-                        PlayerUtils.giveItem(p, new ItemTagBuilder(ItemTags.getInstance().getPlayersUsingTag().get(p.getUniqueId())).getTag());
-                        ItemTags.getInstance().getPlayersUsingTag().remove(p.getUniqueId());
-                        ItemTags.getInstance().getEnteredTag().remove(p.getUniqueId());
-                        ItemTags.getInstance().getLocale().getMessage("cancel").sendPrefixedMessage(p);
-                    }
-                }).setOnClose(() -> ItemTags.getInstance().getPlayersUsingTag().remove(p.getUniqueId()));
-            } else if (type == TagType.ITEM_DELORE_TAG) {
+            if (ItemTags.getInstance().getPlayersUsingTag().containsKey(p.getUniqueId()) && ItemTags.getInstance().getPlayersUsingTag().get(p.getUniqueId()) == TagType.ITEM_DELORE_TAG) {
                 ItemTags.getInstance().getGuiManager().showGUI(p, new LoreRemovalGUI(p, is));
+                return;
             }
+
+            if (!NBTEditor.contains(is, "ItemTagType")) {
+                return;
+            }
+
+            if (ItemTags.getInstance().getPlayersUsingTag().containsKey(p.getUniqueId())) {
+                ItemTags.getInstance().getLocale().getMessage("usingtag").sendPrefixedMessage(p);
+                return;
+            }
+
+            // tag type
+            TagType type = TagType.valueOf(NBTEditor.getString(is, "ItemTagType").toUpperCase());
+
+            // add them to the using list
+            ItemTags.getInstance().getPlayersUsingTag().put(p.getUniqueId(), type);
+            // take a tag
+            PlayerUtils.takeActiveItem(p, CompatibleHand.MAIN_HAND, 1);
+
+            // send messages
+            ItemTags.getInstance().getLocale().getMessage(type == TagType.ITEM_NAME_TAG ? "redeem.itemnametag" : type == TagType.ITEM_LORE_TAG ? "redeem.itemloretag" : "redeem.itemdeloretag").sendPrefixedMessage(p);
+            ItemTags.getInstance().getLocale().getMessage("redeem.cancelmsg").processPlaceholder("cancel_word", Settings.CANCEL_WORD.getString()).sendPrefixedMessage(p);
         }
-
-
     }
 
     /*
@@ -143,6 +79,29 @@ public class PlayerListeners implements Listener {
                 PlayerUtils.giveItem(p, new ItemTagBuilder(ItemTags.getInstance().getPlayersUsingTag().get(p.getUniqueId())).getTag());
                 ItemTags.getInstance().getLocale().getMessage("cancel").sendPrefixedMessage(p);
                 ItemTags.getInstance().getPlayersUsingTag().remove(p.getUniqueId());
+                e.setCancelled(true);
+                return;
+            }
+
+            ItemStack heldItem = Methods.getHand(p);
+            if (heldItem.getType() == XMaterial.AIR.parseMaterial()) {
+                ItemTags.getInstance().getLocale().getMessage("air").sendPrefixedMessage(p);
+                e.setCancelled(true);
+                return;
+            }
+
+            TagType tagType = ItemTags.getInstance().getPlayersUsingTag().get(p.getUniqueId());
+            switch (tagType) {
+                case ITEM_NAME_TAG:
+                    Methods.updateItemName(heldItem, e.getMessage());
+                    ItemTags.getInstance().getPlayersUsingTag().remove(p.getUniqueId());
+                    e.setCancelled(true);
+                    break;
+                case ITEM_LORE_TAG:
+                    Methods.updateItemLore(heldItem, e.getMessage());
+                    ItemTags.getInstance().getPlayersUsingTag().remove(p.getUniqueId());
+                    e.setCancelled(true);
+                    break;
             }
         }
     }

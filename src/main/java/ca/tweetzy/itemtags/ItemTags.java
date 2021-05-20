@@ -17,6 +17,7 @@ import ca.tweetzy.itemtags.settings.Settings;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
@@ -31,7 +32,6 @@ public class ItemTags extends TweetyPlugin {
 
     private static ItemTags instance;
 
-    @Getter
     private CommandManager commandManager;
 
     @Getter
@@ -39,6 +39,9 @@ public class ItemTags extends TweetyPlugin {
 
     @Getter
     private LinkedHashMap<UUID, TagType> playersUsingTag;
+
+    @Getter
+    private HashSet<UUID> enteredTag;
 
     public static ItemTags getInstance() {
         return instance;
@@ -70,6 +73,7 @@ public class ItemTags extends TweetyPlugin {
         this.commandManager = new CommandManager(this);
         this.commandManager.addMainCommand("itemtags").addSubCommands(new CommandGive(), new CommandGiveall(), new CommandReload());
         this.playersUsingTag = new LinkedHashMap<>();
+        this.enteredTag = new HashSet<>();
 
         Bukkit.getPluginManager().registerEvents(new PlayerListeners(), this);
 

@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="df4d7605-7041-46cc-83e6-9473d9e019d1" name="Default Changelist" comment="multi item rename bug fix">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+    <list default="true" id="df4d7605-7041-46cc-83e6-9473d9e019d1" name="Default Changelist" comment="Reverted to traditional rename process (hold the item then type in chat)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/tweetzy/itemtags/ItemTags.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ca/tweetzy/itemtags/ItemTags.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/tweetzy/itemtags/Methods.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ca/tweetzy/itemtags/Methods.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/tweetzy/itemtags/listeners/PlayerListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ca/tweetzy/itemtags/listeners/PlayerListeners.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/en_US.lang" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/en_US.lang" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,7 +121,9 @@
       <workItem from="1621059031097" duration="275000" />
       <workItem from="1621470820211" duration="1108000" />
       <workItem from="1621524476306" duration="18000" />
-      <workItem from="1621525417976" duration="2297000" />
+      <workItem from="1621525417976" duration="2457000" />
+      <workItem from="1621533288865" duration="77000" />
+      <workItem from="1621630550125" duration="8000" />
     </task>
     <task id="LOCAL-00001" summary="1.16 support from Tweety Core">
       <created>1594309293581</created>
@@ -155,7 +153,14 @@
       <option name="project" value="LOCAL" />
       <updated>1621471913219</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Reverted to traditional rename process (hold the item then type in chat)">
+      <created>1621527862713</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1621527862713</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -181,7 +186,8 @@
     <MESSAGE value="+ Updated to latest core version&#10;+ Moved to new gui system&#10;+ Hex support" />
     <MESSAGE value="relocation fix" />
     <MESSAGE value="multi item rename bug fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="multi item rename bug fix" />
+    <MESSAGE value="Reverted to traditional rename process (hold the item then type in chat)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reverted to traditional rename process (hold the item then type in chat)" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>

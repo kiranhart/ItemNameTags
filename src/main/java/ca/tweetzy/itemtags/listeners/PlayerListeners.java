@@ -1,6 +1,7 @@
 package ca.tweetzy.itemtags.listeners;
 
 import ca.tweetzy.core.compatibility.CompatibleHand;
+import ca.tweetzy.core.compatibility.ServerVersion;
 import ca.tweetzy.core.compatibility.XMaterial;
 import ca.tweetzy.core.utils.PlayerUtils;
 import ca.tweetzy.core.utils.nms.NBTEditor;
@@ -17,6 +18,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -32,6 +34,10 @@ public class PlayerListeners implements Listener {
         Player p = e.getPlayer();
 
         if (e.getAction() != null && e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+
+            if (e.getHand() == EquipmentSlot.OFF_HAND && ServerVersion.isServerVersionAtLeast(ServerVersion.V1_9)) {
+                return;
+            }
 
             ItemStack is = e.getItem();
 

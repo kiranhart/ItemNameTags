@@ -3,6 +3,7 @@ package ca.tweetzy.itemtags;
 import ca.tweetzy.core.compatibility.ServerVersion;
 import ca.tweetzy.core.utils.TextUtils;
 import ca.tweetzy.itemtags.settings.Settings;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -51,6 +52,8 @@ public class Methods {
         if (meta != null) {
             if (lore != null && lore.length != 0) {
                 meta.setLore(TextUtils.formatText(lore));
+            } else {
+                meta = Bukkit.getItemFactory().getItemMeta(item.getType());
             }
             item.setItemMeta(meta);
         }

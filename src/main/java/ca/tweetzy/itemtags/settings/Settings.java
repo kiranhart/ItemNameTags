@@ -20,8 +20,14 @@ public class Settings {
 
     public static final ConfigSetting CANCEL_WORD = new ConfigSetting(config, "cancel word", "cancel", "What should be the cancel word when renaming?");
 
+    public static final ConfigSetting WHITE_LIST_USE = new ConfigSetting(config, "white list.use", false, "Should item tags use a white list system instead of the black list?");
+    public static final ConfigSetting WHITE_LIST_ITEMS = new ConfigSetting(config, "white list.items", Arrays.asList(
+            "DIAMOND_SWORD",
+            "IRON_SWORD"
+    ), "Items that the player will be able to rename / remove lore from");
+
     public static final ConfigSetting BLOCKED_ITEMS = new ConfigSetting(config, "blocked.items", Arrays.asList(
-            "ENDER_CHEST", "CHEST"
+            "ENDER_CHEST", "CHEST", "SPAWNER"
     ), "A list of all the items that should be blocked in the renaming process", "These are just to get you started, you've got to add more on your own.");
 
     public static final ConfigSetting USE_LORE_PREFIX = new ConfigSetting(config, "tags.lore prefix.use", false, "Should there be a prefix next to added lore");

@@ -1,6 +1,5 @@
 package ca.tweetzy.itemtags.listeners;
 
-import ca.tweetzy.core.compatibility.CompatibleHand;
 import ca.tweetzy.core.compatibility.ServerVersion;
 import ca.tweetzy.core.compatibility.XMaterial;
 import ca.tweetzy.core.utils.PlayerUtils;
@@ -46,6 +45,9 @@ public class PlayerListeners implements Listener {
             }
 
             if (ItemTags.getInstance().getPlayersUsingTag().containsKey(p.getUniqueId()) && ItemTags.getInstance().getPlayersUsingTag().get(p.getUniqueId()) == TagType.ITEM_DELORE_TAG) {
+                if (Settings.WHITE_LIST_USE.getBoolean() && Settings.WHITE_LIST_ITEMS.getStringList().stream().noneMatch(allowed -> allowed.equalsIgnoreCase(is.getType().name()))) return;
+                if (!Settings.WHITE_LIST_USE.getBoolean() && Settings.BLOCKED_ITEMS.getStringList().stream().anyMatch(blocked -> blocked.equalsIgnoreCase(is.getType().name()))) return;
+
                 ItemTags.getInstance().getGuiManager().showGUI(p, new LoreRemovalGUI(p, is));
                 return;
             }
@@ -59,13 +61,24 @@ public class PlayerListeners implements Listener {
                 return;
             }
 
+            e.setCancelled(true);
+
             // tag type
             TagType type = TagType.valueOf(NBTEditor.getString(is, "ItemTagType").toUpperCase());
 
             // add them to the using list
             ItemTags.getInstance().getPlayersUsingTag().put(p.getUniqueId(), type);
+
             // take a tag
-            PlayerUtils.takeActiveItem(p, CompatibleHand.MAIN_HAND, 1);
+            if (is.getAmount() >= 2) {
+                is.setAmount(is.getAmount() - 1);
+            } else {
+                if (ServerVersion.isServerVersionAbove(ServerVersion.V1_8)) {
+                    p.getInventory().setItemInMainHand(XMaterial.AIR.parseItem());
+                } else {
+                    p.getInventory().setItemInHand(XMaterial.AIR.parseItem());
+                }
+            }
 
             // send messages
             ItemTags.getInstance().getLocale().getMessage(type == TagType.ITEM_NAME_TAG ? "redeem.itemnametag" : type == TagType.ITEM_LORE_TAG ? "redeem.itemloretag" : "redeem.itemdeloretag").sendPrefixedMessage(p);
@@ -92,6 +105,12 @@ public class PlayerListeners implements Listener {
             ItemStack heldItem = Methods.getHand(p);
             if (heldItem.getType() == XMaterial.AIR.parseMaterial()) {
                 ItemTags.getInstance().getLocale().getMessage("air").sendPrefixedMessage(p);
+                e.setCancelled(true);
+                return;
+            }
+
+            if (Settings.WHITE_LIST_USE.getBoolean() && Settings.WHITE_LIST_ITEMS.getStringList().stream().noneMatch(allowed -> allowed.equalsIgnoreCase(heldItem.getType().name())) || !Settings.WHITE_LIST_USE.getBoolean() && Settings.BLOCKED_ITEMS.getStringList().stream().anyMatch(blocked -> blocked.equalsIgnoreCase(heldItem.getType().name()))) {
+                ItemTags.getInstance().getLocale().getMessage("blockeditem").sendPrefixedMessage(p);
                 e.setCancelled(true);
                 return;
             }

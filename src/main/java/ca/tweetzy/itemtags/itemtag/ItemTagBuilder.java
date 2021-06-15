@@ -2,14 +2,13 @@ package ca.tweetzy.itemtags.itemtag;
 
 import ca.tweetzy.core.compatibility.XMaterial;
 import ca.tweetzy.core.utils.TextUtils;
-import ca.tweetzy.core.utils.items.ItemUtils;
 import ca.tweetzy.core.utils.items.TItemBuilder;
+import ca.tweetzy.core.utils.nms.NBTEditor;
 import ca.tweetzy.itemtags.settings.Settings;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * The current file has been created by Kiran Hart
@@ -46,8 +45,8 @@ public class ItemTagBuilder {
     }
 
     public ItemStack getTag() {
-        List<String> tLore = new ArrayList<>();
-        this.lore.forEach(lore -> tLore.add(TextUtils.formatText(lore)));
-        return ItemUtils.createNBTItem(new TItemBuilder(Objects.requireNonNull(material.parseMaterial())).setName(TextUtils.formatText(this.name)).setLore(tLore).toItemStack(), new ItemUtils.NBTOption("ItemTagType", type.name()));
+        ItemStack stack = new TItemBuilder(this.material.parseItem()).setName(this.name).setLore(this.lore.stream().map(TextUtils::formatText).collect(Collectors.toList())).toItemStack();
+        stack = NBTEditor.set(stack, type.name(), "ItemTagType");
+        return stack;
     }
 }

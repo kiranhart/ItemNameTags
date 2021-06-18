@@ -13,6 +13,7 @@ import ca.tweetzy.itemtags.commands.CommandGiveall;
 import ca.tweetzy.itemtags.commands.CommandReload;
 import ca.tweetzy.itemtags.itemtag.TagType;
 import ca.tweetzy.itemtags.listeners.PlayerListeners;
+import ca.tweetzy.itemtags.settings.LocaleSettings;
 import ca.tweetzy.itemtags.settings.Settings;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -31,6 +32,7 @@ public class ItemTags extends TweetyPlugin {
 
     private static ItemTags instance;
 
+    @Getter
     private CommandManager commandManager;
 
     @Getter
@@ -63,7 +65,8 @@ public class ItemTags extends TweetyPlugin {
         Settings.setup();
 
         // Locale
-        setLocale(Settings.LANG.getString(), false);
+        setLocale(Settings.LANG.getString());
+        LocaleSettings.setup();
 
         this.guiManager.init();
         this.commandManager = new CommandManager(this);

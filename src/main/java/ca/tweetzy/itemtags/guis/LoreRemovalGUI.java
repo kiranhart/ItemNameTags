@@ -57,6 +57,7 @@ public class LoreRemovalGUI extends Gui {
 
                 Methods.setItemLore(this.stack, arr);
                 ItemTags.getInstance().getPlayersUsingTag().remove(this.player.getUniqueId());
+                this.player.updateInventory();
                 e.gui.close();
             });
 

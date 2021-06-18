@@ -120,11 +120,13 @@ public class PlayerListeners implements Listener {
                 case ITEM_NAME_TAG:
                     Methods.updateItemName(heldItem, e.getMessage());
                     ItemTags.getInstance().getPlayersUsingTag().remove(p.getUniqueId());
+                    p.updateInventory();
                     e.setCancelled(true);
                     break;
                 case ITEM_LORE_TAG:
                     Methods.updateItemLore(heldItem, e.getMessage());
                     ItemTags.getInstance().getPlayersUsingTag().remove(p.getUniqueId());
+                    p.updateInventory();
                     e.setCancelled(true);
                     break;
             }

@@ -27,6 +27,7 @@ public class LocaleSettings {
         languageNodes.put("cancel", "&cYou cancelled the tag usage, your item tag has been given back");
         languageNodes.put("reload", "&aReloaded the configuration file successfully");
         languageNodes.put("air", "&cYou cannot rename air.");
+        languageNodes.put("blockedword", "&cYou cannot use that word in your rename");
 
         languageNodes.put("redeem.cancelmsg", "&eYou can always use &F'&b%cancel_word%&f'&e to cancel");
         languageNodes.put("redeem.itemnametag", "&ePlease enter the new item name in chat!");

@@ -10,6 +10,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The current file has been created by Kiran Hart
@@ -64,5 +66,18 @@ public class Methods {
         ItemMeta meta = item.getItemMeta();
         List<String> ogLore = (meta.hasLore()) ? meta.getLore() : new ArrayList<>();
         return ogLore;
+    }
+
+    /**
+     * Used to match patterns
+     *
+     * @param pattern is the keyword being searched for
+     * @param sentence is the sentence you're checking
+     * @return whether the keyword is found
+     */
+    public static boolean match(String pattern, String sentence) {
+        Pattern patt = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = patt.matcher(sentence);
+        return matcher.find();
     }
 }

@@ -115,6 +115,14 @@ public class PlayerListeners implements Listener {
                 return;
             }
 
+            for (String s : Settings.BLOCKED_WORDS.getStringList()) {
+                if (Methods.match(s, e.getMessage())) {
+                    ItemTags.getInstance().getLocale().getMessage("blockedword").sendPrefixedMessage(p);
+                    e.setCancelled(true);
+                    return;
+                }
+            }
+
             TagType tagType = ItemTags.getInstance().getPlayersUsingTag().get(p.getUniqueId());
             switch (tagType) {
                 case ITEM_NAME_TAG:

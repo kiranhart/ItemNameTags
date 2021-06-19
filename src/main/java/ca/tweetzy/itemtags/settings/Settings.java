@@ -20,6 +20,8 @@ public class Settings {
 
     public static final ConfigSetting CANCEL_WORD = new ConfigSetting(config, "cancel word", "cancel", "What should be the cancel word when renaming?");
 
+    public static final ConfigSetting BLOCKED_WORDS = new ConfigSetting(config, "blocked words", Arrays.asList("fuck", "bitch"), "Words that should be blocked when using a tag");
+
     public static final ConfigSetting WHITE_LIST_USE = new ConfigSetting(config, "white list.use", false, "Should item tags use a white list system instead of the black list?");
     public static final ConfigSetting WHITE_LIST_ITEMS = new ConfigSetting(config, "white list.items", Arrays.asList(
             "DIAMOND_SWORD",

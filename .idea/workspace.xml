@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="df4d7605-7041-46cc-83e6-9473d9e019d1" name="Default Changelist" comment="1.17 support">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ca/tweetzy/itemtags/settings/LocaleSettings.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/tweetzy/itemtags/ItemTags.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ca/tweetzy/itemtags/ItemTags.java" afterDir="false" />
-    </list>
+    <list default="true" id="df4d7605-7041-46cc-83e6-9473d9e019d1" name="Default Changelist" comment="inventory update + moved to new language system" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -135,7 +130,7 @@
       <workItem from="1623722921227" duration="593000" />
       <workItem from="1623723663027" duration="2083000" />
       <workItem from="1623789191202" duration="24000" />
-      <workItem from="1624038222981" duration="140000" />
+      <workItem from="1624038222981" duration="411000" />
     </task>
     <task id="LOCAL-00001" summary="1.16 support from Tweety Core">
       <created>1594309293581</created>
@@ -193,7 +188,14 @@
       <option name="project" value="LOCAL" />
       <updated>1623725707463</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="inventory update + moved to new language system">
+      <created>1624038627535</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1624038627535</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -223,7 +225,8 @@
     <MESSAGE value="updated tweety core" />
     <MESSAGE value="off hand tag fix" />
     <MESSAGE value="1.17 support" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.17 support" />
+    <MESSAGE value="inventory update + moved to new language system" />
+    <option name="LAST_COMMIT_MESSAGE" value="inventory update + moved to new language system" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>

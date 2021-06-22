@@ -3,6 +3,7 @@ package ca.tweetzy.itemtags.listeners;
 import ca.tweetzy.core.compatibility.ServerVersion;
 import ca.tweetzy.core.compatibility.XMaterial;
 import ca.tweetzy.core.utils.PlayerUtils;
+import ca.tweetzy.core.utils.TextUtils;
 import ca.tweetzy.core.utils.nms.NBTEditor;
 import ca.tweetzy.itemtags.ItemTags;
 import ca.tweetzy.itemtags.Methods;
@@ -10,6 +11,7 @@ import ca.tweetzy.itemtags.guis.LoreRemovalGUI;
 import ca.tweetzy.itemtags.itemtag.ItemTagBuilder;
 import ca.tweetzy.itemtags.itemtag.TagType;
 import ca.tweetzy.itemtags.settings.Settings;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -118,6 +120,14 @@ public class PlayerListeners implements Listener {
             for (String s : Settings.BLOCKED_WORDS.getStringList()) {
                 if (Methods.match(s, e.getMessage())) {
                     ItemTags.getInstance().getLocale().getMessage("blockedword").sendPrefixedMessage(p);
+                    e.setCancelled(true);
+                    return;
+                }
+            }
+
+            if (Settings.USE_MAX_RENAME_LIMIT.getBoolean()) {
+                if (ChatColor.stripColor(TextUtils.formatText(e.getMessage())).length() > Settings.MAX_RENAME_LENGTH.getInt()) {
+                    ItemTags.getInstance().getLocale().getMessage("maxrenamelength").sendPrefixedMessage(p);
                     e.setCancelled(true);
                     return;
                 }

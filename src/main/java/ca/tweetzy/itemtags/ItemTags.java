@@ -11,6 +11,7 @@ import ca.tweetzy.core.utils.Metrics;
 import ca.tweetzy.itemtags.commands.CommandGive;
 import ca.tweetzy.itemtags.commands.CommandGiveall;
 import ca.tweetzy.itemtags.commands.CommandReload;
+import ca.tweetzy.itemtags.commands.CommandSettings;
 import ca.tweetzy.itemtags.itemtag.TagType;
 import ca.tweetzy.itemtags.listeners.PlayerListeners;
 import ca.tweetzy.itemtags.settings.LocaleSettings;
@@ -70,7 +71,7 @@ public class ItemTags extends TweetyPlugin {
 
         this.guiManager.init();
         this.commandManager = new CommandManager(this);
-        this.commandManager.addMainCommand("itemtags").addSubCommands(new CommandGive(), new CommandGiveall(), new CommandReload());
+        this.commandManager.addMainCommand("itemtags").addSubCommands(new CommandGive(), new CommandGiveall(), new CommandReload(), new CommandSettings());
         this.playersUsingTag = new LinkedHashMap<>();
 
         Bukkit.getPluginManager().registerEvents(new PlayerListeners(), this);

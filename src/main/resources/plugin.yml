@@ -18,6 +18,7 @@ permissions:
       itemtags.give: true
       itemtags.giveall: true
       itemtags.reload: true
+      itemtags.settings: true
   itemtags.give:
     description: Allows the user to give an item tag to a player
     default: op
@@ -26,4 +27,7 @@ permissions:
     default: op
   itemtags.reload:
     description: Allows the user to reload the the plugin
+    default: op
+  itemtags.settings:
+    description: Allows the user to open the config editor
     default: op

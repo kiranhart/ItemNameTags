@@ -28,6 +28,7 @@ public class LocaleSettings {
         languageNodes.put("reload", "&aReloaded the configuration file successfully");
         languageNodes.put("air", "&cYou cannot rename air.");
         languageNodes.put("blockedword", "&cYou cannot use that word in your rename");
+        languageNodes.put("maxrenamelength", "&cThat phrase is too long, cannot rename");
 
         languageNodes.put("redeem.cancelmsg", "&eYou can always use &F'&b%cancel_word%&f'&e to cancel");
         languageNodes.put("redeem.itemnametag", "&ePlease enter the new item name in chat!");

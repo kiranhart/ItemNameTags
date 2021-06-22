@@ -21,6 +21,8 @@ public class Settings {
     public static final ConfigSetting CANCEL_WORD = new ConfigSetting(config, "cancel word", "cancel", "What should be the cancel word when renaming?");
 
     public static final ConfigSetting BLOCKED_WORDS = new ConfigSetting(config, "blocked words", Arrays.asList("fuck", "bitch"), "Words that should be blocked when using a tag");
+    public static final ConfigSetting MAX_RENAME_LENGTH = new ConfigSetting(config, "max rename length", 16, "The maximum length of a rename");
+    public static final ConfigSetting USE_MAX_RENAME_LIMIT = new ConfigSetting(config, "use max rename length", false, "Should item tags limit the rename length on items?");
 
     public static final ConfigSetting WHITE_LIST_USE = new ConfigSetting(config, "white list.use", false, "Should item tags use a white list system instead of the black list?");
     public static final ConfigSetting WHITE_LIST_ITEMS = new ConfigSetting(config, "white list.items", Arrays.asList(

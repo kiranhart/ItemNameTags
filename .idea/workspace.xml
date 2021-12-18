@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="df4d7605-7041-46cc-83e6-9473d9e019d1" name="Default Changelist" comment="3.4.0 - Added a block word list">
+    <list default="true" id="df4d7605-7041-46cc-83e6-9473d9e019d1" name="Default Changelist" comment="3.5.0 - Added a max rename length option">
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ca/tweetzy/itemtags/listeners/PlayerListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ca/tweetzy/itemtags/listeners/PlayerListeners.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/tweetzy/itemtags/settings/LocaleSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ca/tweetzy/itemtags/settings/LocaleSettings.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ca/tweetzy/itemtags/settings/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ca/tweetzy/itemtags/settings/Settings.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,7 +137,10 @@
       <workItem from="1623789191202" duration="24000" />
       <workItem from="1624038222981" duration="411000" />
       <workItem from="1624132753031" duration="361000" />
-      <workItem from="1624387000514" duration="330000" />
+      <workItem from="1624387000514" duration="787000" />
+      <workItem from="1624413850841" duration="325000" />
+      <workItem from="1624597068534" duration="514000" />
+      <workItem from="1639796785342" duration="297000" />
     </task>
     <task id="LOCAL-00001" summary="1.16 support from Tweety Core">
       <created>1594309293581</created>
@@ -210,7 +212,14 @@
       <option name="project" value="LOCAL" />
       <updated>1624133097377</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="3.5.0 - Added a max rename length option">
+      <created>1624387610826</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1624387610826</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -242,7 +251,8 @@
     <MESSAGE value="1.17 support" />
     <MESSAGE value="inventory update + moved to new language system" />
     <MESSAGE value="3.4.0 - Added a block word list" />
-    <option name="LAST_COMMIT_MESSAGE" value="3.4.0 - Added a block word list" />
+    <MESSAGE value="3.5.0 - Added a max rename length option" />
+    <option name="LAST_COMMIT_MESSAGE" value="3.5.0 - Added a max rename length option" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>

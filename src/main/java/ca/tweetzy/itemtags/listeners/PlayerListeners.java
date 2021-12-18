@@ -36,8 +36,8 @@ public class PlayerListeners implements Listener {
 
         if (e.getAction() != null && e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
-            if (e.getHand() == EquipmentSlot.OFF_HAND && ServerVersion.isServerVersionAtLeast(ServerVersion.V1_9)) {
-                return;
+            if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_9)) {
+                if (e.getHand() == EquipmentSlot.OFF_HAND) return;
             }
 
             ItemStack is = e.getItem();

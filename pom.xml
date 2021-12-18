@@ -6,7 +6,7 @@
 
     <groupId>ca.tweetzy</groupId>
     <artifactId>ItemNameTags</artifactId>
-    <version>3.5.0</version>
+    <version>3.6.0</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -17,6 +17,7 @@
     <build>
         <defaultGoal>clean install</defaultGoal>
         <finalName>ItemNameTags-${project.version}</finalName>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -27,6 +28,7 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>com.google.code.maven-replacer-plugin</groupId>
                 <artifactId>replacer</artifactId>
@@ -52,7 +54,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.4</version>
                 <executions>
                     <execution>
                         <id>shaded</id>
@@ -67,6 +69,12 @@
                             <artifactSet>
                                 <includes>
                                     <include>ca.tweetzy:tweetycore</include>
+                                    <include>com.zaxxer:HikariCP</include>
+                                    <include>org.slf4j:slf4j-api</include>
+                                    <include>org.slf4j:slf4j-nop</include>
+                                    <include>co.aikar:taskchain-bukkit</include>
+                                    <include>co.aikar:taskchain-core</include>
+                                    <include>com.sparkjava:spark-core</include>
                                 </includes>
                             </artifactSet>
                             <filters>
@@ -76,13 +84,26 @@
                                         <exclude>META-INF/*.SF</exclude>
                                         <exclude>META-INF/*.DSA</exclude>
                                         <exclude>META-INF/*.RSA</exclude>
+                                        <exclude>META-INF/MANIFEST.MF</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
                             <relocations>
                                 <relocation>
                                     <pattern>ca.tweetzy.core</pattern>
-                                    <shadedPattern>${project.groupId}.itemtags.core</shadedPattern>
+                                    <shadedPattern>${project.groupId}.${project.artifactId}.core</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.zaxxer.hikari</pattern>
+                                    <shadedPattern>${project.groupId}.${project.artifactId}.lib.hikari</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.slf4j</pattern>
+                                    <shadedPattern>${project.groupId}.${project.artifactId}.lib.slf4j</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>co.aikar.taskchain</pattern>
+                                    <shadedPattern>${project.groupId}.${project.artifactId}.lib.taskchain</shadedPattern> <!-- Replace this -->
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -90,7 +111,14 @@
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
+
 
     <repositories>
         <repository>
@@ -106,13 +134,13 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.17-R0.1-SNAPSHOT</version>
+            <version>1.18-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>ca.tweetzy</groupId>
             <artifactId>tweetycore</artifactId>
-            <version>2.5.1</version>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

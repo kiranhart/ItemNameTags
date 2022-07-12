@@ -96,7 +96,9 @@ public class PlayerListeners implements Listener {
     public void onPlayerSayCancelWord(AsyncPlayerChatEvent e) {
         Player p = e.getPlayer();
         if (ItemTags.getInstance().getPlayersUsingTag().containsKey(p.getUniqueId())) {
-            if (e.getMessage().equalsIgnoreCase(Settings.CANCEL_WORD.getString())) {
+            final String msg = ChatColor.stripColor(e.getMessage());
+
+            if (msg.equalsIgnoreCase(Settings.CANCEL_WORD.getString())) {
                 PlayerUtils.giveItem(p, new ItemTagBuilder(ItemTags.getInstance().getPlayersUsingTag().get(p.getUniqueId())).getTag());
                 ItemTags.getInstance().getLocale().getMessage("cancel").sendPrefixedMessage(p);
                 ItemTags.getInstance().getPlayersUsingTag().remove(p.getUniqueId());

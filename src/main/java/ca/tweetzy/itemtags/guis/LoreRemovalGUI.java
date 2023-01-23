@@ -1,9 +1,8 @@
 package ca.tweetzy.itemtags.guis;
 
-import ca.tweetzy.core.compatibility.XMaterial;
-import ca.tweetzy.core.gui.Gui;
-import ca.tweetzy.core.gui.GuiUtils;
-import ca.tweetzy.core.utils.TextUtils;
+import ca.tweetzy.flight.comp.enums.CompMaterial;
+import ca.tweetzy.flight.gui.template.BaseGUI;
+import ca.tweetzy.flight.utils.QuickItem;
 import ca.tweetzy.itemtags.ItemTags;
 import ca.tweetzy.itemtags.Methods;
 import org.bukkit.entity.Player;
@@ -17,51 +16,49 @@ import java.util.List;
  * Time Created: 9:11 PM
  * Usage of any code found within this class is prohibited unless given explicit permission otherwise.
  */
-public class LoreRemovalGUI extends Gui {
+public class LoreRemovalGUI extends BaseGUI {
 
-    private final Player player;
-    private final ItemStack stack;
-    private final List<String> lore;
+	private final Player player;
+	private final ItemStack stack;
+	private final List<String> lore;
 
-    public LoreRemovalGUI(Player player, ItemStack stack) {
-        setTitle(TextUtils.formatText("&8Click to remove lore"));
-        setAllowDrops(false);
-        setAcceptsItems(false);
-        setUseLockedCells(true);
-        setDefaultItem(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem());
+	public LoreRemovalGUI(Player player, ItemStack stack) {
+		super("&8Click to remove lore");
 
-        this.player = player;
-        this.stack = stack;
-        this.lore = Methods.getItemLore(stack);
+		this.player = player;
+		this.stack = stack;
+		this.lore = Methods.getItemLore(stack);
 
-        if (this.lore.size() <= 9) setRows(1);
-        if (this.lore.size() >= 10 && this.lore.size() <= 18) setRows(2);
-        if (this.lore.size() >= 19 && this.lore.size() <= 27) setRows(3);
-        if (this.lore.size() >= 28 && this.lore.size() <= 36) setRows(4);
-        if (this.lore.size() >= 37 && this.lore.size() <= 45) setRows(5);
-        if (this.lore.size() >= 46 && this.lore.size() <= 54) setRows(6);
+		if (this.lore.size() <= 9) setRows(1);
+		if (this.lore.size() >= 10 && this.lore.size() <= 18) setRows(2);
+		if (this.lore.size() >= 19 && this.lore.size() <= 27) setRows(3);
+		if (this.lore.size() >= 28 && this.lore.size() <= 36) setRows(4);
+		if (this.lore.size() >= 37 && this.lore.size() <= 45) setRows(5);
+		if (this.lore.size() >= 46 && this.lore.size() <= 54) setRows(6);
 
-        draw();
-    }
+		draw();
+	}
 
-    private void draw() {
-        int slot = 0;
-        for (String s : this.lore) {
-            int finalSlot = slot;
-            setButton(slot, GuiUtils.createButtonItem(XMaterial.LIME_STAINED_GLASS_PANE, TextUtils.formatText(s), "&7Click to remove to this line from the lore"), e -> {
-                List<String> tempLore = this.lore;
-                tempLore.remove(finalSlot);
 
-                String[] arr = new String[tempLore.size()];
-                arr = tempLore.toArray(arr);
+	@Override
+	protected void draw() {
+		int slot = 0;
+		for (String s : this.lore) {
+			int finalSlot = slot;
+			setButton(slot, QuickItem.of(CompMaterial.LIME_STAINED_GLASS_PANE).name(s).lore("&7Click to remove to this line from the lore").make(), e -> {
+				List<String> tempLore = this.lore;
+				tempLore.remove(finalSlot);
 
-                Methods.setItemLore(this.stack, arr);
-                ItemTags.getInstance().getPlayersUsingTag().remove(this.player.getUniqueId());
-                this.player.updateInventory();
-                e.gui.close();
-            });
+				String[] arr = new String[tempLore.size()];
+				arr = tempLore.toArray(arr);
 
-            slot++;
-        }
-    }
+				Methods.setItemLore(this.stack, arr);
+				ItemTags.getInstance().getPlayersUsingTag().remove(this.player.getUniqueId());
+				this.player.updateInventory();
+				e.gui.close();
+			});
+
+			slot++;
+		}
+	}
 }

@@ -1,26 +1,21 @@
 package ca.tweetzy.itemtags;
 
-import ca.tweetzy.core.TweetyCore;
-import ca.tweetzy.core.TweetyPlugin;
-import ca.tweetzy.core.commands.CommandManager;
-import ca.tweetzy.core.compatibility.ServerVersion;
-import ca.tweetzy.core.compatibility.XMaterial;
-import ca.tweetzy.core.configuration.Config;
-import ca.tweetzy.core.gui.GuiManager;
-import ca.tweetzy.core.utils.Metrics;
+import ca.tweetzy.flight.FlightPlugin;
+import ca.tweetzy.flight.command.CommandManager;
+import ca.tweetzy.flight.comp.enums.ServerVersion;
+import ca.tweetzy.flight.gui.GuiManager;
+import ca.tweetzy.flight.utils.Common;
 import ca.tweetzy.itemtags.commands.CommandGive;
 import ca.tweetzy.itemtags.commands.CommandGiveall;
 import ca.tweetzy.itemtags.commands.CommandReload;
-import ca.tweetzy.itemtags.commands.CommandSettings;
 import ca.tweetzy.itemtags.itemtag.TagType;
 import ca.tweetzy.itemtags.listeners.PlayerListeners;
-import ca.tweetzy.itemtags.settings.LocaleSettings;
 import ca.tweetzy.itemtags.settings.Settings;
+import ca.tweetzy.itemtags.settings.Translations;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -29,72 +24,50 @@ import java.util.UUID;
  * Time Created: 2:35 PM
  * Usage of any code found within this class is prohibited unless given explicit permission otherwise.
  */
-public class ItemTags extends TweetyPlugin {
+public class ItemTags extends FlightPlugin {
 
-    private static ItemTags instance;
+	@Getter
+	private CommandManager commandManager;
 
-    @Getter
-    private CommandManager commandManager;
+	@Getter
+	private final GuiManager guiManager = new GuiManager(this);
 
-    @Getter
-    private final GuiManager guiManager = new GuiManager(this);
+	@Getter
+	private LinkedHashMap<UUID, TagType> playersUsingTag;
 
-    @Getter
-    private LinkedHashMap<UUID, TagType> playersUsingTag;
 
-    public static ItemTags getInstance() {
-        return instance;
-    }
+	@Override
+	protected void onFlight() {
+		// Shutdown plugin if server version is not 1.8+
+		if (ServerVersion.isServerVersionAtOrBelow(ServerVersion.V1_7)) {
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
 
-    protected Metrics metrics;
+		Settings.init();
+		Translations.init();
 
-    @Override
-    public void onPluginLoad() {
-        instance = this;
-    }
+		Common.setPrefix(Settings.PREFIX.getStringOr("&8[&eItemTags&8]"));
 
-    @Override
-    public void onPluginEnable() {
-        TweetyCore.registerPlugin(this, 4, XMaterial.NAME_TAG.name());
+		this.guiManager.init();
+		this.commandManager = new CommandManager(this);
+		this.commandManager.addMainCommand("itemtags").addSubCommands(new CommandGive(), new CommandGiveall(), new CommandReload());
 
-        // Shutdown plugin if server version is not 1.8+
-        if (ServerVersion.isServerVersionAtOrBelow(ServerVersion.V1_7)) {
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
+		this.playersUsingTag = new LinkedHashMap<>();
 
-        Settings.setup();
+		Bukkit.getPluginManager().registerEvents(new PlayerListeners(), this);
 
-        // Locale
-        setLocale(Settings.LANG.getString());
-        LocaleSettings.setup();
+		// Perform the update check
+		getServer().getScheduler().runTaskLaterAsynchronously(this, () -> new UpdateChecker(this, 29641, Bukkit.getConsoleSender()).check(), 1L);
+	}
 
-        this.guiManager.init();
-        this.commandManager = new CommandManager(this);
-        this.commandManager.addMainCommand("itemtags").addSubCommands(new CommandGive(), new CommandGiveall(), new CommandReload(), new CommandSettings());
-        this.playersUsingTag = new LinkedHashMap<>();
 
-        Bukkit.getPluginManager().registerEvents(new PlayerListeners(), this);
+	public static ItemTags getInstance() {
+		return (ItemTags) FlightPlugin.getInstance();
+	}
 
-        // Perform the update check
-        getServer().getScheduler().runTaskLaterAsynchronously(this, () -> new UpdateChecker(this, 29641, getConsole()).check(), 1L);
-
-        // metrics
-        this.metrics = new Metrics(getInstance(), 7550);
-
-    }
-
-    @Override
-    public void onPluginDisable() {
-        instance = null;
-    }
-
-    @Override
-    public void onConfigReload() {
-    }
-
-    @Override
-    public List<Config> getExtraConfig() {
-        return null;
-    }
+	@Override
+	protected int getBStatsId() {
+		return 7550;
+	}
 }

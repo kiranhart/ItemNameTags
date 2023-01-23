@@ -1,14 +1,11 @@
 package ca.tweetzy.itemtags.itemtag;
 
-import ca.tweetzy.core.compatibility.XMaterial;
-import ca.tweetzy.core.utils.TextUtils;
-import ca.tweetzy.core.utils.items.TItemBuilder;
-import ca.tweetzy.core.utils.nms.NBTEditor;
+import ca.tweetzy.flight.comp.enums.CompMaterial;
+import ca.tweetzy.flight.utils.QuickItem;
 import ca.tweetzy.itemtags.settings.Settings;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * The current file has been created by Kiran Hart
@@ -18,35 +15,33 @@ import java.util.stream.Collectors;
  */
 public class ItemTagBuilder {
 
-    private TagType type;
-    private XMaterial material;
-    private String name;
-    private List<String> lore;
+	private final TagType type;
+	private CompMaterial material;
+	private String name;
+	private List<String> lore;
 
-    public ItemTagBuilder(TagType type) {
-        this.type = type;
-        switch (this.type) {
-            case ITEM_NAME_TAG:
-                this.material = XMaterial.matchXMaterial(Settings.ITEM_NAME_TAG_MATERIAL.getString()).get();
-                this.name = Settings.ITEM_NAME_TAG_NAME.getString();
-                this.lore = Settings.ITEM_NAME_TAG_LORE.getStringList();
-                break;
-            case ITEM_LORE_TAG:
-                this.material = XMaterial.matchXMaterial(Settings.ITEM_LORE_TAG_MATERIAL.getString()).get();
-                this.name = Settings.ITEM_LORE_TAG_NAME.getString();
-                this.lore = Settings.ITEM_LORE_TAG_LORE.getStringList();
-                break;
-            case ITEM_DELORE_TAG:
-                this.material = XMaterial.matchXMaterial(Settings.ITEM_DELORE_TAG_MATERIAL.getString()).get();
-                this.name = Settings.ITEM_DELORE_TAG_NAME.getString();
-                this.lore = Settings.ITEM_DELORE_TAG_LORE.getStringList();
-                break;
-        }
-    }
+	public ItemTagBuilder(TagType type) {
+		this.type = type;
+		switch (this.type) {
+			case ITEM_NAME_TAG:
+				this.material = CompMaterial.matchCompMaterial(Settings.ITEM_NAME_TAG_MATERIAL.getString()).get();
+				this.name = Settings.ITEM_NAME_TAG_NAME.getString();
+				this.lore = Settings.ITEM_NAME_TAG_LORE.getStringList();
+				break;
+			case ITEM_LORE_TAG:
+				this.material = CompMaterial.matchCompMaterial(Settings.ITEM_LORE_TAG_MATERIAL.getString()).get();
+				this.name = Settings.ITEM_LORE_TAG_NAME.getString();
+				this.lore = Settings.ITEM_LORE_TAG_LORE.getStringList();
+				break;
+			case ITEM_DELORE_TAG:
+				this.material = CompMaterial.matchCompMaterial(Settings.ITEM_DELORE_TAG_MATERIAL.getString()).get();
+				this.name = Settings.ITEM_DELORE_TAG_NAME.getString();
+				this.lore = Settings.ITEM_DELORE_TAG_LORE.getStringList();
+				break;
+		}
+	}
 
-    public ItemStack getTag() {
-        ItemStack stack = new TItemBuilder(this.material.parseItem()).setName(this.name).setLore(this.lore.stream().map(TextUtils::formatText).collect(Collectors.toList())).toItemStack();
-        stack = NBTEditor.set(stack, type.name(), "ItemTagType");
-        return stack;
-    }
+	public ItemStack getTag() {
+		return QuickItem.of(this.material).name(this.name).lore(this.lore).tag("ItemTagType", type.name()).make();
+	}
 }

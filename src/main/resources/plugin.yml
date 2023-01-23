@@ -1,33 +1,11 @@
-name: ItemNameTags
-main: ca.tweetzy.itemtags.ItemTags
-version: maven-version-number
+name: ${project.name}
+version: ${project.version}
+main: ${main.class}
+author: ${author}
 api-version: 1.13
-description: The best item tag plugin out there.
-authors: [Kiran Hart]
 
 commands:
   itemtags:
-    description: Main command for the plugin
-    aliases: [itemnametags]
-    usage: /itemtags
 
-permissions:
-  itemtags.*:
-    description: Allows access to all the sub permissions
-    children:
-      itemtags.give: true
-      itemtags.giveall: true
-      itemtags.reload: true
-      itemtags.settings: true
-  itemtags.give:
-    description: Allows the user to give an item tag to a player
-    default: op
-  itemtags.giveall:
-    description: Allows the user to give everyone a item tag
-    default: op
-  itemtags.reload:
-    description: Allows the user to reload the the plugin
-    default: op
-  itemtags.settings:
-    description: Allows the user to open the config editor
-    default: op
+softdepend:
+  - PlaceholderAPI

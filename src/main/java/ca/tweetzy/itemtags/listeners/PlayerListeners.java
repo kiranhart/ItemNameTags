@@ -1,16 +1,14 @@
 package ca.tweetzy.itemtags.listeners;
 
-import ca.tweetzy.flight.comp.NBTEditor;
 import ca.tweetzy.flight.comp.enums.CompMaterial;
 import ca.tweetzy.flight.comp.enums.ServerVersion;
+import ca.tweetzy.flight.nbtapi.NBT;
 import ca.tweetzy.flight.settings.TranslationManager;
 import ca.tweetzy.flight.utils.Common;
 import ca.tweetzy.flight.utils.PlayerUtil;
 import ca.tweetzy.itemtags.ItemTags;
-import ca.tweetzy.itemtags.Methods;
-import ca.tweetzy.itemtags.guis.LoreRemovalGUI;
-import ca.tweetzy.itemtags.itemtag.ItemTagBuilder;
-import ca.tweetzy.itemtags.itemtag.TagType;
+import ca.tweetzy.itemtags.api.TagType;
+import ca.tweetzy.itemtags.factory.TagFactory;
 import ca.tweetzy.itemtags.settings.Settings;
 import ca.tweetzy.itemtags.settings.Translations;
 import org.bukkit.ChatColor;
@@ -33,63 +31,69 @@ import org.bukkit.inventory.ItemStack;
 public class PlayerListeners implements Listener {
 
 	@EventHandler
-	public void onTagRedeem(PlayerInteractEvent e) {
-		Player p = e.getPlayer();
+	public void onTagRedeem(final PlayerInteractEvent event) {
+		final Player player = event.getPlayer();
 
-		if (e.getAction() != null && e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+		if (event.getAction() != null && event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
 			if (ServerVersion.isServerVersionAtLeast(ServerVersion.V1_9)) {
-				if (e.getHand() == EquipmentSlot.OFF_HAND) return;
+				if (event.getHand() == EquipmentSlot.OFF_HAND) return;
 			}
 
-			ItemStack is = e.getItem();
+			ItemStack is = event.getItem();
 
-			if (is == null || is.getType() == CompMaterial.AIR.parseMaterial()) {
+			if (is == null || is.getType() == CompMaterial.AIR.parseMaterial() || is.getAmount() == 0)
+				return;
+
+
+//			if (!ItemTags.getTagPlayerManager().contains(player.getUniqueId())) {
+//				return;
+//			}
+//
+//			final TagType tagTypeBeingUsed = ItemTags.getTagPlayerManager().get(player.getUniqueId());
+//
+//
+//			// special shit for delore tag
+//			if (tagTypeBeingUsed == TagType.ITEM_DELORE_TAG) {
+//				if (Settings.WHITE_LIST_USE.getBoolean() && Settings.WHITE_LIST_ITEMS.getStringList().stream().noneMatch(allowed -> allowed.equalsIgnoreCase(is.getType().name()))) return;
+//				if (!Settings.WHITE_LIST_USE.getBoolean() && Settings.BLOCKED_ITEMS.getStringList().stream().anyMatch(blocked -> blocked.equalsIgnoreCase(is.getType().name()))) return;
+//
+////				ItemTags.getInstance().getGuiManager().showGUI(p, new LoreRemovalGUI(p, is));
+//				return;
+//			}
+
+			if (!NBT.get(is, nbt -> nbt.hasTag("ItemTagType"))) {
 				return;
 			}
 
-			if (ItemTags.getInstance().getPlayersUsingTag().containsKey(p.getUniqueId()) && ItemTags.getInstance().getPlayersUsingTag().get(p.getUniqueId()) == TagType.ITEM_DELORE_TAG) {
-				if (Settings.WHITE_LIST_USE.getBoolean() && Settings.WHITE_LIST_ITEMS.getStringList().stream().noneMatch(allowed -> allowed.equalsIgnoreCase(is.getType().name()))) return;
-				if (!Settings.WHITE_LIST_USE.getBoolean() && Settings.BLOCKED_ITEMS.getStringList().stream().anyMatch(blocked -> blocked.equalsIgnoreCase(is.getType().name()))) return;
-
-				ItemTags.getInstance().getGuiManager().showGUI(p, new LoreRemovalGUI(p, is));
+			if (ItemTags.getTagPlayerManager().contains(player.getUniqueId())) {
+				Common.tell(player, TranslationManager.string(Translations.USING_TAG));
 				return;
 			}
 
-			if (!NBTEditor.contains(is, "ItemTagType")) {
-				return;
-			}
-
-			if (ItemTags.getInstance().getPlayersUsingTag().containsKey(p.getUniqueId())) {
-				Common.tell(p, TranslationManager.string(Translations.USING_TAG));
-				return;
-			}
-
-			e.setCancelled(true);
-
-			// tag type
-			final TagType type = TagType.valueOf(NBTEditor.getString(is, "ItemTagType").toUpperCase());
+			event.setCancelled(true);
 
 			// add them to the using list
-			ItemTags.getInstance().getPlayersUsingTag().put(p.getUniqueId(), type);
+			final TagType type = NBT.get(is, nbt -> nbt.getEnum("ItemTagType", TagType.class));
+			ItemTags.getTagPlayerManager().add(player.getUniqueId(), type);
 
 			// take a tag
 			if (is.getAmount() >= 2) {
 				is.setAmount(is.getAmount() - 1);
 			} else {
 				if (ServerVersion.isServerVersionAbove(ServerVersion.V1_8)) {
-					p.getInventory().setItemInMainHand(CompMaterial.AIR.parseItem());
+					player.getInventory().setItemInMainHand(CompMaterial.AIR.parseItem());
 				} else {
-					p.getInventory().setItemInHand(CompMaterial.AIR.parseItem());
+					player.getInventory().setItemInHand(CompMaterial.AIR.parseItem());
 				}
 			}
 
 			// send messages
-			Common.tell(p, TranslationManager.string(
+			Common.tell(player, TranslationManager.string(
 					type == TagType.ITEM_NAME_TAG ? Translations.TAG_ITEM_NAME_RENAME : type == TagType.ITEM_LORE_TAG ? Translations.TAG_ITEM_LORE_RENAME : Translations.TAG_ITEM_DELORE_RENAME
 			));
 
-			Common.tell(p, TranslationManager.string(Translations.TAG_CANCEL_MSG, "cancel_word", Settings.CANCEL_WORD.getString()));
+			Common.tell(player, TranslationManager.string(Translations.TAG_CANCEL_MSG, "cancel_word", Settings.CANCEL_WORD.getString()));
 		}
 	}
 
@@ -99,35 +103,37 @@ public class PlayerListeners implements Listener {
 	 */
 	@EventHandler
 	public void onPlayerSayCancelWord(AsyncPlayerChatEvent e) {
-		Player p = e.getPlayer();
-		if (ItemTags.getInstance().getPlayersUsingTag().containsKey(p.getUniqueId())) {
+		final Player player = e.getPlayer();
+
+		if (ItemTags.getTagPlayerManager().contains(player.getUniqueId())) {
 			final String msg = ChatColor.stripColor(e.getMessage());
 
 			if (msg.equalsIgnoreCase(Settings.CANCEL_WORD.getString())) {
-				PlayerUtil.giveItem(p, new ItemTagBuilder(ItemTags.getInstance().getPlayersUsingTag().get(p.getUniqueId())).getTag());
-				Common.tell(p, TranslationManager.string(Translations.CANCEL));
-				ItemTags.getInstance().getPlayersUsingTag().remove(p.getUniqueId());
+				PlayerUtil.giveItem(player, TagFactory.request(ItemTags.getTagPlayerManager().get(player.getUniqueId())));
+				Common.tell(player, TranslationManager.string(Translations.CANCEL));
+				ItemTags.getTagPlayerManager().remove(player.getUniqueId());
 				e.setCancelled(true);
 				return;
 			}
 
-			ItemStack heldItem = Methods.getHand(p);
+			ItemStack heldItem = Methods.getHand(player);
+
 			if (heldItem.getType() == CompMaterial.AIR.parseMaterial()) {
-				Common.tell(p, TranslationManager.string(Translations.AIR));
+				Common.tell(player, TranslationManager.string(Translations.AIR));
 
 				e.setCancelled(true);
 				return;
 			}
 
 			if (Settings.WHITE_LIST_USE.getBoolean() && Settings.WHITE_LIST_ITEMS.getStringList().stream().noneMatch(allowed -> allowed.equalsIgnoreCase(heldItem.getType().name())) || !Settings.WHITE_LIST_USE.getBoolean() && Settings.BLOCKED_ITEMS.getStringList().stream().anyMatch(blocked -> blocked.equalsIgnoreCase(heldItem.getType().name()))) {
-				Common.tell(p, TranslationManager.string(Translations.BLOCKED_ITEM));
+				Common.tell(player, TranslationManager.string(Translations.BLOCKED_ITEM));
 				e.setCancelled(true);
 				return;
 			}
 
 			for (String s : Settings.BLOCKED_WORDS.getStringList()) {
 				if (Methods.match(s, e.getMessage())) {
-					Common.tell(p, TranslationManager.string(Translations.BLOCKED_WORD));
+					Common.tell(player, TranslationManager.string(Translations.BLOCKED_WORD));
 
 					e.setCancelled(true);
 					return;
@@ -136,24 +142,24 @@ public class PlayerListeners implements Listener {
 
 			if (Settings.USE_MAX_RENAME_LIMIT.getBoolean()) {
 				if (Common.colorize(e.getMessage()).length() > Settings.MAX_RENAME_LENGTH.getInt()) {
-					Common.tell(p, TranslationManager.string(Translations.MAX_RENAME_LENGTH));
+					Common.tell(player, TranslationManager.string(Translations.MAX_RENAME_LENGTH));
 					e.setCancelled(true);
 					return;
 				}
 			}
 
-			TagType tagType = ItemTags.getInstance().getPlayersUsingTag().get(p.getUniqueId());
+			TagType tagType = ItemTags.getInstance().getPlayersUsingTag().get(player.getUniqueId());
 			switch (tagType) {
 				case ITEM_NAME_TAG:
 					Methods.updateItemName(heldItem, e.getMessage());
-					ItemTags.getInstance().getPlayersUsingTag().remove(p.getUniqueId());
-					p.updateInventory();
+					ItemTags.getInstance().getPlayersUsingTag().remove(player.getUniqueId());
+					player.updateInventory();
 					e.setCancelled(true);
 					break;
 				case ITEM_LORE_TAG:
 					Methods.updateItemLore(heldItem, e.getMessage());
-					ItemTags.getInstance().getPlayersUsingTag().remove(p.getUniqueId());
-					p.updateInventory();
+					ItemTags.getInstance().getPlayersUsingTag().remove(player.getUniqueId());
+					player.updateInventory();
 					e.setCancelled(true);
 					break;
 			}
@@ -166,10 +172,11 @@ public class PlayerListeners implements Listener {
 	 */
 	@EventHandler
 	public void onPlayerLeave(PlayerQuitEvent e) {
-		Player p = e.getPlayer();
-		if (ItemTags.getInstance().getPlayersUsingTag().containsKey(p.getUniqueId())) {
-			PlayerUtil.giveItem(p, new ItemTagBuilder(ItemTags.getInstance().getPlayersUsingTag().get(p.getUniqueId())).getTag());
-			ItemTags.getInstance().getPlayersUsingTag().remove(p.getUniqueId());
+		final Player player = e.getPlayer();
+
+		if (ItemTags.getTagPlayerManager().contains(player.getUniqueId())) {
+			PlayerUtil.giveItem(player, TagFactory.request(ItemTags.getTagPlayerManager().get(player.getUniqueId())));
+			ItemTags.getTagPlayerManager().remove(player.getUniqueId());
 		}
 	}
 }

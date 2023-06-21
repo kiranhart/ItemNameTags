@@ -1,4 +1,4 @@
-package ca.tweetzy.itemtags.itemtag;
+package ca.tweetzy.itemtags.api;
 
 /**
  * The current file has been created by Kiran Hart

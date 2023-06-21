@@ -15,7 +15,7 @@ import java.util.Arrays;
 public class Settings extends FlightSettings {
 
 	public static final ConfigEntry PREFIX = create("prefix", "&8[&eItemTags&8]", "The prefix for the plugin");
-	public static final ConfigEntry LANG = create("locale.lang", "en_US", "The default language file the plugin should use");
+	public static final ConfigEntry LANG = create("language", "en_US", "The default language file the plugin should use");
 
 	public static final ConfigEntry CANCEL_WORD = create("cancel word", "cancel", "What should be the cancel word when renaming?");
 

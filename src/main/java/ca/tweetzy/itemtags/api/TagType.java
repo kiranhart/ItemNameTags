@@ -8,17 +8,17 @@ package ca.tweetzy.itemtags.api;
  */
 public enum TagType {
 
-    ITEM_NAME_TAG("itemnametag"),
-    ITEM_LORE_TAG("itemloretag"),
-    ITEM_DELORE_TAG("itemdeloretag");
+	ITEM_NAME_TAG("itemnametag"),
+	ITEM_LORE_TAG("itemloretag"),
+	ITEM_DELORE_TAG("itemdeloretag");
 
-    private final String type;
+	private final String type;
 
-    TagType(String type) {
-        this.type = type;
-    }
+	TagType(String type) {
+		this.type = type;
+	}
 
-    public String getType() {
-        return type;
-    }
+	public String getType() {
+		return type;
+	}
 }

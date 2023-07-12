@@ -4,18 +4,12 @@ import ca.tweetzy.flight.utils.QuickItem;
 import ca.tweetzy.itemtags.api.ItemTag;
 import ca.tweetzy.itemtags.api.TagType;
 import ca.tweetzy.itemtags.settings.Settings;
-import lombok.NonNull;
 import org.bukkit.inventory.ItemStack;
 
 public final class ItemDeLoreTag extends ItemTag {
 
 	public ItemDeLoreTag() {
 		super(TagType.ITEM_DELORE_TAG);
-	}
-
-	@Override
-	public void process(@NonNull ItemStack itemToProcess) {
-
 	}
 
 	@Override

@@ -3,27 +3,26 @@ package ca.tweetzy.itemtags.commands;
 import ca.tweetzy.flight.command.AllowedExecutor;
 import ca.tweetzy.flight.command.Command;
 import ca.tweetzy.flight.command.ReturnType;
-import ca.tweetzy.flight.utils.PlayerUtil;
-import ca.tweetzy.itemtags.api.TagType;
-import ca.tweetzy.itemtags.factory.TagFactory;
+import ca.tweetzy.itemtags.settings.Settings;
+import ca.tweetzy.itemtags.settings.Translations;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public final class CommandSelf extends Command {
+public final class CommandReload extends Command {
 
-	public CommandSelf() {
-		super(AllowedExecutor.PLAYER, "self");
+	public CommandReload() {
+		super(AllowedExecutor.BOTH, "reload");
 	}
 
 	@Override
 	protected ReturnType execute(CommandSender sender, String... args) {
 		if (!(sender instanceof Player)) return ReturnType.FAIL;
 
-		final Player player = (Player) sender;
-		PlayerUtil.giveItem(player, TagFactory.request(TagType.ITEM_NAME_TAG));
-
+		Settings.init();
+		Translations.init();
+		tell(sender, Translations.string(Translations.RELOAD));
 
 		return ReturnType.SUCCESS;
 	}
@@ -35,7 +34,7 @@ public final class CommandSelf extends Command {
 
 	@Override
 	public String getPermissionNode() {
-		return null;
+		return "itemtags.command.reload";
 	}
 
 	@Override

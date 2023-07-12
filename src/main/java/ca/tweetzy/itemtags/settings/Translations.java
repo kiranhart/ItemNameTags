@@ -33,4 +33,7 @@ public final class Translations extends TranslationManager {
 	public static TranslationEntry TAG_ITEM_NAME_RENAME = create("redeem.item name tag", "&ePlease enter the new item name in chat!.");
 	public static TranslationEntry TAG_ITEM_LORE_RENAME = create("redeem.item lore tag", "&ePlease enter new lore addition in chat!");
 	public static TranslationEntry TAG_ITEM_DELORE_RENAME = create("redeem.item delore tag", "&aPlease right click the item you wish to remove lore from!\"");
+
+	public static TranslationEntry GUI_LORE_REMOVAL_TITLE = create("gui.lore removal.title", "&8Click to remove lore");
+	public static TranslationEntry GUI_LORE_REMOVAL_REMOVE_LINE = create("gui.lore removal.remove line", "&7Click to remove to this line from the lore");
 }

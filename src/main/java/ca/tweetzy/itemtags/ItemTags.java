@@ -4,7 +4,8 @@ import ca.tweetzy.flight.FlightPlugin;
 import ca.tweetzy.flight.command.CommandManager;
 import ca.tweetzy.flight.gui.GuiManager;
 import ca.tweetzy.flight.utils.Common;
-import ca.tweetzy.itemtags.commands.CommandSelf;
+import ca.tweetzy.itemtags.commands.CommandGive;
+import ca.tweetzy.itemtags.commands.CommandReload;
 import ca.tweetzy.itemtags.listeners.PlayerListeners;
 import ca.tweetzy.itemtags.manager.TagPlayerManager;
 import ca.tweetzy.itemtags.settings.Settings;
@@ -25,7 +26,6 @@ public class ItemTags extends FlightPlugin {
 	private final TagPlayerManager tagPlayerManager = new TagPlayerManager();
 
 
-
 	@Override
 	protected void onFlight() {
 		// settings and locale setup
@@ -35,7 +35,7 @@ public class ItemTags extends FlightPlugin {
 		Common.setPrefix(Settings.PREFIX.getString());
 		Common.setPluginName("&8[&eItemTags&8]");
 
-		this.commandManager.addMainCommand("itemtags").addSubCommands(new CommandSelf());
+		this.commandManager.addMainCommand("itemtags").addSubCommands(new CommandReload(), new CommandGive());
 		getServer().getPluginManager().registerEvents(new PlayerListeners(), this);
 
 	}

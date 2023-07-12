@@ -6,52 +6,40 @@
     <groupId>ca.tweetzy</groupId>
     <artifactId>itemtags</artifactId>
 
-    <name>ItemNameTags</name>
-    <description>A new take on traditional player owned shops</description>
+    <name>ItemTags</name>
     <version>3.8.0</version>
     <packaging>jar</packaging>
 
     <properties>
         <author>Kiran Hart</author>
-        <jarName>${project.name}</jarName>
-        <main.class>${project.groupId}.${project.artifactId}.ItemTags</main.class>
+        <jarName>ItemTags</jarName>
+        <main.class>${project.groupId}.${project.artifactId}.${project.name}</main.class>
         <java.version>1.8</java.version>
-        <flight.version>3.10.0</flight.version>
+        <flight.version>3.14.2</flight.version>
         <flight.path>ca.tweetzy</flight.path>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <repositories>
         <repository>
-            <id>nms-repo</id>
-            <url>https://repo.codemc.org/repository/nms/</url>
-        </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-        <repository>
             <id>repsy</id>
             <name>Tweetzy Maven Repo On Repsy</name>
             <url>https://repo.repsy.io/mvn/kiran/tweetzy</url>
         </repository>
         <repository>
-            <id>placeholderapi</id>
-            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+            <id>nms-repo</id>
+            <url>https://repo.codemc.io/repository/nms/</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>maven-snapshots</id>
-            <url>https://repository.apache.org/content/repositories/snapshots/</url>
-        </pluginRepository>
-    </pluginRepositories>
-
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.19.3-R0.1-SNAPSHOT</version>
+            <version>1.20.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -59,42 +47,10 @@
             <artifactId>flight</artifactId>
             <version>${flight.version}</version>
         </dependency>
-        <dependency>
-            <groupId>me.clip</groupId>
-            <artifactId>placeholderapi</artifactId>
-            <version>2.11.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.8.6</version>
-        </dependency>
     </dependencies>
     <build>
         <finalName>${jarName}</finalName>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>1.4</version>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>create</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <format>{0,number}</format>
-                    <items>
-                        <item>buildNumber</item>
-                    </items>
-                    <doCheck>false</doCheck>
-                    <doUpdate>false</doUpdate>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -112,7 +68,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.1-SNAPSHOT</version>
+                <version>3.2.4</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -158,10 +114,10 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>C:\Dev\Minecraft\latest\plugins</outputDirectory>
+                            <outputDirectory>D:\Development\Spigot Servers\Latest Version\plugins</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>C:\Users\Kiran\Documents\Development\Minecraft\Active\${project.name}\target</directory>
+                                    <directory>${project.build.directory}</directory>
                                     <include>${project.name}.jar</include>
                                     <filtering>false</filtering>
                                 </resource>
@@ -178,10 +134,4 @@
             </resource>
         </resources>
     </build>
-    <scm>
-        <connection>scm:git:http://127.0.0.1/dummy</connection>
-        <developerConnection>scm:git:https://127.0.0.1/dummy</developerConnection>
-        <tag>HEAD</tag>
-        <url>http://127.0.0.1/dummy</url>
-    </scm>
 </project>

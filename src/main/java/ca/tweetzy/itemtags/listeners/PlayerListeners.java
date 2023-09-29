@@ -48,7 +48,7 @@ public class PlayerListeners implements Listener {
 			if (is == null || is.getType() == CompMaterial.AIR.parseMaterial() || is.getAmount() == 0)
 				return;
 
-			if (!NBT.get(is, nbt -> nbt.hasTag("ItemTagType"))) {
+			if (!NBT.get(is, nbt -> (boolean) nbt.hasTag("ItemTagType"))) {
 				if (ItemTags.getTagPlayerManager().contains(player.getUniqueId()) && ItemTags.getTagPlayerManager().get(player.getUniqueId()) == TagType.ITEM_DELORE_TAG) {
 					if (Settings.WHITE_LIST_USE.getBoolean() && Settings.WHITE_LIST_ITEMS.getStringList().stream().noneMatch(allowed -> allowed.equalsIgnoreCase(is.getType().name())))
 						return;
@@ -68,7 +68,7 @@ public class PlayerListeners implements Listener {
 			event.setCancelled(true);
 
 			// add them to the using list
-			final TagType type = NBT.get(is, nbt -> nbt.getEnum("ItemTagType", TagType.class));
+			final TagType type = NBT.get(is, nbt -> (TagType) nbt.getEnum("ItemTagType", TagType.class));
 			ItemTags.getTagPlayerManager().add(player.getUniqueId(), type);
 
 			// take a tag

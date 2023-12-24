@@ -62,4 +62,50 @@ public class LoreRemovalGUI extends BaseGUI {
 			slot++;
 		}
 	}
+
+	@Override
+	protected ItemStack getBackButton() {
+		return QuickItem
+				.of(CompMaterial.DARK_OAK_DOOR)
+				.name(TranslationManager.string(Translations.GUI_SHARED_ITEMS_BACK_BUTTON_NAME))
+				.lore(TranslationManager.list(Translations.GUI_SHARED_ITEMS_BACK_BUTTON_LORE, "left_click", TranslationManager.string(Translations.MOUSE_LEFT_CLICK)))
+				.make();
+	}
+
+	@Override
+	protected ItemStack getExitButton() {
+		return QuickItem
+				.of(CompMaterial.BARRIER)
+				.name(TranslationManager.string(Translations.GUI_SHARED_ITEMS_EXIT_BUTTON_NAME))
+				.lore(TranslationManager.list(Translations.GUI_SHARED_ITEMS_EXIT_BUTTON_LORE, "left_click", TranslationManager.string(Translations.MOUSE_LEFT_CLICK)))
+				.make();
+	}
+
+	@Override
+	protected ItemStack getPreviousButton() {
+		return QuickItem
+				.of(CompMaterial.ARROW)
+				.name(TranslationManager.string(Translations.GUI_SHARED_ITEMS_PREVIOUS_BUTTON_NAME))
+				.lore(TranslationManager.list(Translations.GUI_SHARED_ITEMS_PREVIOUS_BUTTON_LORE, "left_click", TranslationManager.string(Translations.MOUSE_LEFT_CLICK)))
+				.make();
+	}
+
+	@Override
+	protected ItemStack getNextButton() {
+		return QuickItem
+				.of(CompMaterial.ARROW)
+				.name(TranslationManager.string(Translations.GUI_SHARED_ITEMS_NEXT_BUTTON_NAME))
+				.lore(TranslationManager.list(Translations.GUI_SHARED_ITEMS_NEXT_BUTTON_LORE, "left_click", TranslationManager.string(Translations.MOUSE_LEFT_CLICK)))
+				.make();
+	}
+
+	@Override
+	protected int getPreviousButtonSlot() {
+		return 48;
+	}
+
+	@Override
+	protected int getNextButtonSlot() {
+		return 50;
+	}
 }

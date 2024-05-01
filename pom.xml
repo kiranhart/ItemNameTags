@@ -7,15 +7,15 @@
     <artifactId>itemtags</artifactId>
 
     <name>ItemTags</name>
-    <version>3.10.0</version>
+    <version>3.11.0</version>
     <packaging>jar</packaging>
 
     <properties>
         <author>Kiran Hart</author>
         <jarName>ItemTags</jarName>
         <main.class>${project.groupId}.${project.artifactId}.${project.name}</main.class>
-        <java.version>1.8</java.version>
-        <flight.version>3.17.0</flight.version>
+        <java.version>16</java.version>
+        <flight.version>3.19.0</flight.version>
         <flight.path>ca.tweetzy</flight.path>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -68,7 +68,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
+                <version>3.3.0-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <phase>package</phase>

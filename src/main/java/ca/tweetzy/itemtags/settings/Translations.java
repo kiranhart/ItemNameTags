@@ -13,7 +13,7 @@ public final class Translations extends TranslationManager {
 	}
 
 	public static void init() {
-		new Translations(ItemTags.getInstance()).setup();
+		new Translations(ItemTags.getInstance()).setup(ItemTags.getInstance());
 	}
 
 	public static TranslationEntry INVALID_TAG = create("error.invalid tag", "&cThat is not a valid tag type!");
